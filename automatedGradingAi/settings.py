@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'djoser',
-    # 'MyApp',
+    'MyApp',
     'MyAppApi',
     'core',
     
@@ -96,7 +96,6 @@ DATABASES = {
     },
 }
 }
-
 
 
 # Password validation
