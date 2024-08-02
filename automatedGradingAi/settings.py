@@ -81,6 +81,8 @@ WSGI_APPLICATION = 'automatedGradingAi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# ahed added things here 
+
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
