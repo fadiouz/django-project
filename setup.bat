@@ -8,6 +8,13 @@ cd django_app_venv
 REM Activate the virtual environment
 Scripts\activate.bat
 
+(
+echo REM Activate the virtual environment
+echo Scripts\activate.bat
+echo py manage.py runserver
+) > run_project.bat
+
+
 REM Create and change to the project directory
 mkdir gradingProject
 cd gradingProject
