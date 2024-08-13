@@ -36,7 +36,7 @@ class ExamForms(models.Model):
 
 class questions(models.Model):
     examForm = models.ForeignKey(ExamForms, on_delete=models.PROTECT)
-    question_number = models.IntegerField(max_length=10)
+    question_number = models.IntegerField()
     answer = models.CharField(max_length=10)
     
 class Marks(models.Model):
