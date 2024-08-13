@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Q, F, Count
 from MyApp.models import User, Address
+
 # Create your views here.
 
 def say_hello(request):
@@ -25,7 +26,7 @@ def say_hello(request):
 
 
     ##### (and)  to but to filter ther are 3 way
-    # user = User.objects.filter(f_name__contains = 'fadi', l_name__contains = 'asali').first() 
+    user = User.objects.filter(f_name__contains = 'fadi', l_name__contains = 'asali').first() 
     # user = User.objects.filter(f_name__contains = 'fadi').filter(l_name__contains = 'asali').first() 
     # user = User.objects.filter(Q(f_name__contains = 'fadi') & Q(l_name__contains = 'asali')).first() 
 

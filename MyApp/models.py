@@ -7,6 +7,8 @@ class Address (models.Model):
     
 
     
+    
+    
 class User (models.Model):
     f_name = models.CharField(max_length=255)
     l_name = models.CharField(max_length=255)

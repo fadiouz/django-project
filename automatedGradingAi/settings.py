@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'djoser',
-    'MyApp',
-    'MyAppApi',
+    # 'MyApp',
+    # 'MyAppApi',
     'core',
-    'adminApp'
+    'adminApp',
+    'userApp',
+
     
 ]
 
