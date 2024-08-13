@@ -6,26 +6,26 @@ from django.contrib.auth.hashers import make_password
 
 seeder = Seed.seeder()
 
-# seeder.add_entity(Addresses, 5, {
-#     'name': lambda x: seeder.faker.name(),
-#     'parent': None
+
+seeder.add_entity(Role, 10, {
+    'name': lambda x: seeder.faker.user_name(),
+})
+seeder.execute()
+
+
+# seeder.add_entity(User, 1, {
+#     'username': "superadmin",
+#     'email': "superadmin@superadmin.com",
+#     'phone_number': None,
+#     'password': make_password("superadmin1234"),  
+#     'is_superuser': False,
+#     'is_staff': False,
+#     'is_active': True,
+#     'date_joined': lambda x: timezone.now(),
+#     'role': '1'
 # })
 
-
 # seeder.execute()
-
-seeder.add_entity(User, 1, {
-    'username': "admin",
-    'email': "admin@admin.com",
-    'phone_number': None,
-    'password': make_password("admin1234"),  
-    'is_superuser': False,
-    'is_staff': False,
-    'is_active': True,
-    'date_joined': lambda x: timezone.now(),
-})
-
-seeder.execute()
 
 # users = User.objects.all()
 # addresses = Addresses.objects.all()

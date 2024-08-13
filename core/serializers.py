@@ -12,11 +12,17 @@ from django.contrib.auth import get_user_model
 #                   'email', 'first_name', 'last_name']
 
 
-class UserSerializer(BaseUserSerializer):
-    class Meta(BaseUserSerializer.Meta):
-        model = User
-        fields = ['id', 'username',
-                  'email', 'phone_number']
+# class UserSerializer(BaseUserSerializer):
+#     class Meta(BaseUserSerializer.Meta):
+#         model = User
+#         fields = ['id', 'username',
+#                   'email', 'phone_number']
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ['id', 'name']
         
         
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -28,12 +34,13 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class UserCreateSerializer(BaseUserCreateSerializer):
     token = serializers.SerializerMethodField()
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
+    
+    role_id = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all(), source='role', write_only=True)
+    role = RoleSerializer(read_only=True)
 
     class Meta(BaseUserCreateSerializer.Meta):
-
-        fields = ['id', 'username', 'password', 'email', 'phone_number', 'token', 'first_name', 'last_name']
+        model = User        
+        fields = ['id', 'username', 'password', 'email', 'phone_number', 'token', 'role', 'role_id']
 
     def get_token(self, obj):
         refresh = RefreshToken.for_user(obj)
@@ -43,11 +50,5 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         }
         return data
 
-    def create(self, validated_data):
-        first_name = validated_data.pop('first_name')
-        last_name = validated_data.pop('last_name')
-
-        user = get_user_model().objects.create_user(**validated_data)
-        Customers.objects.create(user=user, first_name=first_name, last_name=last_name)
-        return user
+   
 
