@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'core',
     'adminApp',
     'userApp',
-    'django_seed',
 
     
 ]
