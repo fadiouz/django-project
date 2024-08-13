@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'MyApp',
     'MyAppApi',
     'core',
+    'adminApp'
     
 ]
 
