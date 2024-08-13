@@ -23,6 +23,8 @@ urlpatterns = [
     # path('MyAppApi/', include('MyAppApi.urls')),
     # path('adminApp/', include('adminApp.urls')),
     # path('userApp/', include('userApp.urls')),
+    # path('core/', include('core.urls')),
+
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     path('dashboard/',include('adminApp.urls'))

@@ -8,26 +8,26 @@ class User(AbstractUser):
     first_name = None
     last_name = None
     email = models.EmailField(unique=True)
-    phone_number = models.IntegerField(unique=True)
+    phone_number = models.IntegerField(unique=True, null=True)
 
 
 class Addresses(models.Model):
     name = models.CharField(max_length=255)
-    parent = models.ForeignKey('self', on_delete=models.PROTECT)
+    parent = models.ForeignKey('self', on_delete=models.PROTECT, null=True)
     
     def __str__(self):
         return self.name
     
-class BusinessAcounts(models.Model):
+class BusinessAccounts(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
     address = models.ManyToManyField(Addresses)
     
 
 
-class Imployees(models.Model):
+class Employees(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    business_acounts = models.ForeignKey(BusinessAcounts, on_delete=models.PROTECT)
+    business_accounts = models.ForeignKey(BusinessAccounts, on_delete=models.PROTECT)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
