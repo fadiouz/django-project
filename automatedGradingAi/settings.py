@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 LOGIN_URL="auth/login/"
+LOGIN_REDIRECT_URL = '/dashboard'
 
 
 # Application definition
@@ -170,3 +171,6 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(weeks=4), 
     
 }
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
