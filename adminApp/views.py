@@ -22,13 +22,12 @@ def forgot_password(request):
 
 @login_required
 def index(request): 
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render())
+    return render(request , 'index.html')
 
 @login_required
 def get_admins(request):
-    template = loader.get_template('admins/index.html')
-    return HttpResponse(template.render())
+    # template = loader.get_template('admins/index.html')
+    return render(request , 'admins/index.html')
 
 @login_required
 def get_clients(request):
