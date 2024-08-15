@@ -45,9 +45,10 @@ INSTALLED_APPS = [
     'djoser',
     # 'MyApp',
     # 'MyAppApi',
-    'core',
     'adminApp',
     'userApp',
+    'core',
+    
 
     
 ]
@@ -151,7 +152,6 @@ REST_FRAMEWORK = {
     ),
     
 }
-
 
 AUTH_USER_MODEL = 'core.User'
 

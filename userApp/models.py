@@ -6,6 +6,8 @@ class Classes(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
 
 class Students(models.Model):
     first_name = models.CharField(max_length=255)
@@ -23,7 +25,7 @@ class StudentClasses(models.Model):
 
 class Exams(models.Model):
     classes = models.ForeignKey(Classes, on_delete=models.PROTECT)
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     complete_mark = models.IntegerField()
     pass_mark = models.IntegerField()
     question_number = models.IntegerField()
@@ -36,7 +38,7 @@ class ExamForms(models.Model):
 
 class questions(models.Model):
     examForm = models.ForeignKey(ExamForms, on_delete=models.PROTECT)
-    question_number = models.IntegerField()
+    # question_number = models.IntegerField()
     answer = models.CharField(max_length=10)
     
 class Marks(models.Model):

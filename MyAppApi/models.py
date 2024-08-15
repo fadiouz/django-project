@@ -13,7 +13,7 @@ class Address (models.Model):
 
     
 class UserAddress(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='useruseruser')
     address = models.ForeignKey(Address, on_delete=models.PROTECT, related_name='addressitem')
     num = models.CharField(max_length=255)
     

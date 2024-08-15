@@ -19,22 +19,24 @@ class Addresses(models.Model):
     def __str__(self):
         return self.name
     
-
-    
 class User(AbstractUser):
     first_name = None
     last_name = None
     email = models.EmailField(unique=True)
     phone_number = models.IntegerField(unique=True, null=True)
     role = models.ForeignKey(Role, on_delete=models.PROTECT)
-    address = models.ManyToManyField(Addresses)
-
-
+    
+    def __str__(self):
+        return self.username
 
 class Employees(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='user')
     employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='employee')
 
+
+class UserAddress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    address = models.ForeignKey(Addresses, on_delete=models.CASCADE)
 
 
     

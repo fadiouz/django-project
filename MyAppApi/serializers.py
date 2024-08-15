@@ -28,6 +28,8 @@ class CostomerSerializer(serializers.ModelSerializer):
         model = Costomer        
         fields = ['id', 'user_id', 'gender']
 
+
+
 # class UserSerializer(serializers.ModelSerializer):
 #     address_id = serializers.PrimaryKeyRelatedField(queryset=Address.objects.all(), source='address', write_only=True)
 #     address = AddressSerializer(read_only=True)
