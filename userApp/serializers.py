@@ -34,14 +34,13 @@ class StudentClassesSerializer(serializers.ModelSerializer):
         fields = ['id', 'classes', 'student', 'examination_id', 'date']  
    
 
-class ExamFormsSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)  
-    form_name = serializers.CharField() 
-    class Meta:
-        model = ExamForms
-        fields = ['id', 'form_name']  
-        
-        
+# class ExamFormsSerializer(serializers.ModelSerializer):
+#     id = serializers.IntegerField(read_only=True)  
+#     form_name = serializers.CharField() 
+#     class Meta:
+#         model = ExamForms
+#         fields = ['id', 'form_name']  
+               
 
 class GetNameExamFormsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)  
@@ -51,17 +50,15 @@ class GetNameExamFormsSerializer(serializers.ModelSerializer):
         model = ExamForms
         fields = ['id', 'form_name']  
     
-    
         
 class ExamsSerializer(serializers.ModelSerializer):
     classes = GetNameClassesSerializer(read_only=True)
-    classes_id = serializers.PrimaryKeyRelatedField(queryset=Classes.objects.all(), write_only=True)
-    exam_forms = ExamFormsSerializer(many=True, write_only=True)
-    # forms = serializers.SerializerMethodField()  
+    classes_id = serializers.PrimaryKeyRelatedField(queryset=Classes.objects.all())
+    # exam_forms = ExamFormsSerializer(many=True, write_only=True)
     
     class Meta:
         model = Exams
-        fields = ['id', 'title', 'complete_mark', 'pass_mark', 'question_number', 'classes_id', 'classes', 'exam_forms']
+        fields = ['id', 'title', 'complete_mark', 'pass_mark', 'question_number', 'classes_id', 'classes']
     
     # def get_forms(self, obj):
     #     exam_forms = ExamForms.objects.filter(exam=obj)
@@ -70,11 +67,11 @@ class ExamsSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         classes_id = validated_data.pop('classes_id')
-        exam_forms_data = validated_data.pop('exam_forms')
+        # exam_forms_data = validated_data.pop('exam_forms')
         exam = Exams.objects.create(classes=classes_id, **validated_data)
         
-        for exam_form_data in exam_forms_data:
-            ExamForms.objects.create(exam=exam, **exam_form_data)
+        # for exam_form_data in exam_forms_data:
+        #     ExamForms.objects.create(exam=exam, **exam_form_data)
             
         return exam
     
@@ -88,5 +85,106 @@ class ExamsSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
+
+class QuestionsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)  
+    question_id = serializers.IntegerField()  
+    answer = serializers.CharField() 
+    class Meta:
+        model = Questions
+        fields = ['id', 'question_id', 'answer']
+        
+
+
+class GetNameQuestionsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)  
+    question_id = serializers.IntegerField(read_only=True) 
+    answer = serializers.CharField(read_only=True) 
+
+    class Meta:
+        model = Questions
+        fields = ['id', 'question_id', 'answer'] 
+        
+        
+
+class QuestionsExamFormsSerializer(serializers.ModelSerializer):
+    # id = serializers.IntegerField(read_only=True)  
+    form_name = serializers.CharField() 
+    questions = QuestionsSerializer(many=True, write_only=True)
+    exam_id = serializers.PrimaryKeyRelatedField(queryset=Exams.objects.all())
+    
+    class Meta:
+        model = ExamForms
+        fields = ['id', 'form_name', 'exam_id', 'questions']
+    
+    def get_questions(self, obj):
+        questions = Questions.objects.filter(examForm=obj)
+        serializer = GetNameQuestionsSerializer(questions, many=True)
+        return serializer.data
+    
+    
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['questions'] = self.get_questions(instance)
+        return ret
+    
+    def create(self, validated_data):
+        exam_id = validated_data.pop('exam_id')
+        
+        # exam = Exams.objects.filter(pk=exam_id).get
+        # question_number = exam.question_number
+        
+        questions = validated_data.pop('questions')
+        # question_enter_number = len(questions)
+        
+        # if question_number != question_enter_number:
+        #     raise serializers.ValidationError("Number of questions doesn't match the required number for this exam.")
+        
+        examForm = ExamForms.objects.create(exam=exam_id, **validated_data)
+        
+        for question in questions:
+            Questions.objects.create(examForm=examForm, **question)
+            
+        return examForm
+    
+    def update(self, instance, validated_data):
+        exam_id = validated_data.get('exam_id')
+        questions_data = validated_data.pop('questions')
+
+        if exam_id:
+            instance.exam_id = exam_id
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+
+        if questions_data:
+            # Update or create questions
+            for question_data in questions_data:
+                question_id = question_data.get('id', None)
+                if question_id:
+                    question = Questions.objects.get(pk=question_id)
+                    question.answer = question_data.get('answer')
+                    question.save()
+                else:
+                    Questions.objects.create(examForm=instance, **question_data)
+
+        return instance
+    
+    def delete(self, instance):
+        questions_to_delete = Questions.objects.filter(examForm=instance)
+        questions_to_delete.delete()
+        instance.delete()
+    
+class getQuestionsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)  
+    question_id = serializers.IntegerField(read_only=True)  
+    answer = serializers.CharField(read_only=True) 
+    
+    class Meta:
+        model = Questions
+        fields = ['id', 'question_id', 'answer']
 
 

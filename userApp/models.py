@@ -30,15 +30,17 @@ class Exams(models.Model):
     pass_mark = models.IntegerField()
     question_number = models.IntegerField()
     
+    def __str__(self):
+        return self.title
 
 class ExamForms(models.Model):
-    exam = models.ForeignKey(Exams, on_delete=models.PROTECT)
+    exam = models.ForeignKey(Exams, on_delete=models.CASCADE)
     form_name = models.CharField(max_length=255)
     
 
-class questions(models.Model):
-    examForm = models.ForeignKey(ExamForms, on_delete=models.PROTECT)
-    # question_number = models.IntegerField()
+class Questions(models.Model):
+    examForm = models.ForeignKey(ExamForms, on_delete=models.CASCADE)
+    question_id = models.IntegerField(null=True)
     answer = models.CharField(max_length=10)
     
 class Marks(models.Model):

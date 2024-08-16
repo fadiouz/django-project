@@ -9,6 +9,6 @@ router= DefaultRouter()
 # router.register('addresses', views.AddressViewSet)
 router.register('exams', views.ExamsViewSet)
 router.register('classes', views.ClassesViewSet)
-
+router.register('questionsExamForms', views.QuestionsExamFormsViewSet)
 
 urlpatterns = router.urls
