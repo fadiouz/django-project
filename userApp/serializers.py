@@ -4,13 +4,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from core.models import *
 from core.serializers import *
-
 from django.contrib.auth import get_user_model
 from .models import *
 from django.conf import settings
+from rest_framework.response import Response
 
-
-    
+   
 class GetNameClassesSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)  
     name = serializers.CharField(read_only=True)  
@@ -32,39 +31,21 @@ class StudentClassesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classes
         fields = ['id', 'classes', 'student', 'examination_id', 'date']  
-   
-
-# class ExamFormsSerializer(serializers.ModelSerializer):
-#     id = serializers.IntegerField(read_only=True)  
-#     form_name = serializers.CharField() 
-#     class Meta:
-#         model = ExamForms
-#         fields = ['id', 'form_name']  
-               
-
-class GetNameExamFormsSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)  
-    form_name = serializers.CharField(read_only=True) 
-    
-    class Meta:
-        model = ExamForms
-        fields = ['id', 'form_name']  
     
         
 class ExamsSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(required=False)
+    complete_mark = serializers.IntegerField(required=False)
+    question_number = serializers.IntegerField(required=False)
+    classes_id = serializers.IntegerField(required=False)
+
     classes = GetNameClassesSerializer(read_only=True)
-    classes_id = serializers.PrimaryKeyRelatedField(queryset=Classes.objects.all())
-    # exam_forms = ExamFormsSerializer(many=True, write_only=True)
+    classes_id = serializers.PrimaryKeyRelatedField(queryset=Classes.objects.all(), write_only=True)
     
     class Meta:
         model = Exams
         fields = ['id', 'title', 'complete_mark', 'pass_mark', 'question_number', 'classes_id', 'classes']
-    
-    # def get_forms(self, obj):
-    #     exam_forms = ExamForms.objects.filter(exam=obj)
-    #     serializer = GetNameExamFormsSerializer(exam_forms, many=True)
-    #     return serializer.data
-    
+ 
     def create(self, validated_data):
         classes_id = validated_data.pop('classes_id')
         # exam_forms_data = validated_data.pop('exam_forms')
@@ -75,17 +56,6 @@ class ExamsSerializer(serializers.ModelSerializer):
             
         return exam
     
-    def update(self, instance, validated_data):
-        classes_id = validated_data.get('classes_id')
-        if classes_id:
-            instance.classes_id = classes_id
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        instance.save()
-        return instance
-
-
 
 class QuestionsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)  
@@ -96,7 +66,6 @@ class QuestionsSerializer(serializers.ModelSerializer):
         fields = ['id', 'question_id', 'answer']
         
 
-
 class GetNameQuestionsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)  
     question_id = serializers.IntegerField(read_only=True) 
@@ -105,11 +74,10 @@ class GetNameQuestionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Questions
         fields = ['id', 'question_id', 'answer'] 
-        
-        
+             
 
 class QuestionsExamFormsSerializer(serializers.ModelSerializer):
-    # id = serializers.IntegerField(read_only=True)  
+    id = serializers.IntegerField(read_only=True)
     form_name = serializers.CharField() 
     questions = QuestionsSerializer(many=True, write_only=True)
     exam_id = serializers.PrimaryKeyRelatedField(queryset=Exams.objects.all())
@@ -117,7 +85,7 @@ class QuestionsExamFormsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamForms
         fields = ['id', 'form_name', 'exam_id', 'questions']
-    
+        
     def get_questions(self, obj):
         questions = Questions.objects.filter(examForm=obj)
         serializer = GetNameQuestionsSerializer(questions, many=True)
@@ -129,24 +97,6 @@ class QuestionsExamFormsSerializer(serializers.ModelSerializer):
         ret['questions'] = self.get_questions(instance)
         return ret
     
-    def create(self, validated_data):
-        exam_id = validated_data.pop('exam_id')
-        
-        # exam = Exams.objects.filter(pk=exam_id).get
-        # question_number = exam.question_number
-        
-        questions = validated_data.pop('questions')
-        # question_enter_number = len(questions)
-        
-        # if question_number != question_enter_number:
-        #     raise serializers.ValidationError("Number of questions doesn't match the required number for this exam.")
-        
-        examForm = ExamForms.objects.create(exam=exam_id, **validated_data)
-        
-        for question in questions:
-            Questions.objects.create(examForm=examForm, **question)
-            
-        return examForm
     
     def update(self, instance, validated_data):
         exam_id = validated_data.get('exam_id')
@@ -177,6 +127,7 @@ class QuestionsExamFormsSerializer(serializers.ModelSerializer):
         questions_to_delete = Questions.objects.filter(examForm=instance)
         questions_to_delete.delete()
         instance.delete()
+    
     
 class getQuestionsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)  
