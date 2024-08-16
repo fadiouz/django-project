@@ -41,11 +41,17 @@ class ExamsSerializer(serializers.ModelSerializer):
 
     classes = GetNameClassesSerializer(read_only=True)
     classes_id = serializers.PrimaryKeyRelatedField(queryset=Classes.objects.all(), write_only=True)
+    # exam_forms = ExamFormsSerializer(many=True, write_only=True)
     
     class Meta:
         model = Exams
         fields = ['id', 'title', 'complete_mark', 'pass_mark', 'question_number', 'classes_id', 'classes']
- 
+    
+    # def get_forms(self, obj):
+    #     exam_forms = ExamForms.objects.filter(exam=obj)
+    #     serializer = GetNameExamFormsSerializer(exam_forms, many=True)
+    #     return serializer.data
+    
     def create(self, validated_data):
         classes_id = validated_data.pop('classes_id')
         # exam_forms_data = validated_data.pop('exam_forms')
@@ -56,6 +62,16 @@ class ExamsSerializer(serializers.ModelSerializer):
             
         return exam
     
+    # def update(self, instance, validated_data):
+    #     classes_id = validated_data.get('classes_id')
+    #     if classes_id:
+    #         instance.classes_id = classes_id
+    #     for attr, value in validated_data.items():
+    #         setattr(instance, attr, value)
+
+    #     instance.save()
+    #     return instance
+
 
 class QuestionsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)  

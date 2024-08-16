@@ -52,8 +52,13 @@ class ExamsViewSet(ModelViewSet):
     def update(self, request, *args, **kwargs):
         exam_id = kwargs.get('pk')
         if ExamForms.objects.filter(exam=exam_id).exists():
-            return Response({"message": "You can't make changes as ExamForms are associated with this exam."},
-                        status=status.HTTP_400_BAD_REQUEST)
+            title = request.data.get('title')
+            exam = Exams.objects.get(pk=exam_id)
+            exam.title = title
+            exam.save()
+            
+            return Response({"message": "Only title changed."},
+                        status=status.HTTP_200_OK)
         else:
             title = request.data.get('title')
             complete_mark = request.data.get('complete_mark')
