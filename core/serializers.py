@@ -83,6 +83,10 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         }
         return data
 
+    def create(self, validated_data):
+        validated_data['is_active'] = 0 
+        user = User.objects.create_user(**validated_data)
+        return user
 
     # def create(self, validated_data):
     #     user = User.objects.create_user(**validated_data)  # إنشاء المستخدم باستخدام البيانات المحققة

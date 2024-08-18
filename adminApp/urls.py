@@ -10,8 +10,13 @@ urlpatterns = [
     path('', views.index, name='dashboard_index'),
     
     path('admins', views.get_admins, name='dashboard_admins'),
-    path('clients', views.get_clients, name='dashboard_clients'),
     
+    
+    #clients
+    path('clients', views.get_clients, name='dashboard_clients'),
+    path('client/<int:id>', views.show_client, name='dashboard_show_client'),
+
+
     # classes
     path('client/classes', views.get_classes, name='dashboard_classes'),
     path('client/add-class', views.add_class, name='dashboard_add_class'),

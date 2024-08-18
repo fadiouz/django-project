@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from userApp.models import *
 from core.models import *
 from .decorators import *
-
+from django.http import JsonResponse
 
 
 def access_admin_page(role_id):
@@ -66,6 +66,8 @@ def get_admins(request):
         return HttpResponse('cant access to this page')
 
 
+
+#clients
 @login_required
 def get_clients(request):
     role = Role.objects.filter(name__in=['employee', 'business client', 'costomer']).values_list('id', flat=True) 
@@ -76,7 +78,18 @@ def get_clients(request):
     template = loader.get_template('users/index.html')
     return HttpResponse(template.render(context, request))
 
+@login_required
+def show_client(request, id):
+    # role = Role.objects.filter(name__in=['employee', 'business client', 'costomer']).values_list('id', flat=True) 
+    user = User.objects.filter(id=id).values()
+    user_list = list(user)
 
+    context = {'user_list': user_list}
+
+    template = loader.get_template('users/show.html')
+    # return HttpResponse(template.render())
+
+    return HttpResponse(template.render(context, request))
 
 
 # classes
@@ -92,6 +105,7 @@ def get_classes(request):
     template = loader.get_template('classes/index.html')
     return HttpResponse(template.render(context, request))
 
+
 @login_required
 def add_class(request):
     # return HttpResponse(" request method")
@@ -105,8 +119,9 @@ def add_class(request):
         new_class.user = user
         new_class.save()
         
-        return HttpResponse(f"Class '{class_name}' added successfully!")
-    return HttpResponse("Invalid request method")
+        return JsonResponse({'message': f"Class '{class_name}' added successfully!"})
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
     # template = loader.get_template('users/classes/add-class.html')
     # return HttpResponse(template.render())
 

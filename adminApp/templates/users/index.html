@@ -50,6 +50,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone Number</th>
+                        <th>Status</th>
                         <th>Type</th>
 
                         <!-- <th>Status</th> -->
@@ -63,7 +64,14 @@
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.phone_number }}</td>
-                        <td>{{ user.role.name }}</td>
+                        <td>
+                            {% if user.is_active == 1 %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.role_id }}</td>
                         <!-- <td>
 
                             <span class="fa-fw select-all fas"></span>
@@ -72,7 +80,7 @@
                             <span class="badge bg-success">Active</span>
                         </td> -->
                         <td>
-                            <a class="btn btn-sm rounded-pill btn-outline-info" href="" title="show"><span
+                            <a class="btn btn-sm rounded-pill btn-outline-info" title="show" href="{% url 'dashboard_show_client' id=user.id %}"><span
                                     class="fa-fw select-all fas"></span>show </a>
                             <a class="btn btn-sm rounded-pill btn-outline-secondary" title="edit"><span
                                     class="fa-fw select-all fas"></span>edit </a>

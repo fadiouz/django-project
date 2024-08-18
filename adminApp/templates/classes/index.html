@@ -14,11 +14,33 @@
     .fontawesome-icons .the-icon svg {
         font-size: 24px;
     }
+
+    .alert {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 9999;
+        width: 500px;
+        display: none;
+    }
 </style>
 
 {% endblock %}
 
 {% block body_content %}
+<div class="alert alert-success alert-dismissible show fade" id="alert-success">
+    This is a success alert.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"
+        aria-label="Close"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible show fade" id="alert-unsuccess">
+    This is a danger alert.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"
+        aria-label="Close"></button>
+</div>
+
+
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
@@ -75,8 +97,11 @@
                 <i class="fas fa-user-plus"></i> Add Class
             </button>
 
+
+
+
             <!-- Modal Add Class -->
-            <div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+            <div class="modal fade modal w-100" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered ">
                     <div class="modal-content">
@@ -85,19 +110,14 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
-
-
-
                         <div class="modal-body">
 
-                            <!-- <div class="row"> -->
-
-
-
-                            <form id="add_class_form" method="POST" action="{% url 'dashboard_add_class' %}">
+                            <form id="add_class_form" method="POST" action="{% url 'dashboard_add_class' %}"
+                                enctype="multipart/form-data">
                                 {% csrf_token %}
+
                                 <!-- First Name -->
-                                <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label for="class_name">Class Name </label>
                                         <input type="text" class="form-control" id="class_name" name="class_name"
@@ -109,21 +129,11 @@
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
 
-                                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
-                                        id="button_add_class">Add</button>
+                                    <button type="submit" class="btn btn-primary" id="button_add_class">Add</button>
 
                                 </div>
                             </form>
-
-                            <!-- </div> -->
-
-                            <!-- </div> -->
-
-
                         </div>
-
-                        <!-- </div> -->
-
                     </div>
                 </div>
             </div>
@@ -131,17 +141,64 @@
 
         </div>
     </div>
+    <!-- <div class="alert alert-success" role="alert" id="alert-success" style="display: none;">
+        This is a success alert—check it out!
+    </div> -->
+
 
 </section>
 {% endblock %}
 
 {% block js %}
 <script src="{% static 'assets/vendors/simple-datatables/simple-datatables.js' %}"></script>
+<script src="{% static 'assets/vendors/fontawesome/all.min.js' %}"></script>
+
+
 <script>
     // Simple Datatable
     let table1 = document.querySelector('#table1');
     let dataTable = new simpleDatatables.DataTable(table1);
 </script>
-<script src="{% static 'assets/vendors/fontawesome/all.min.js' %}"></script>
 
+
+
+<script>
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const submitButton = document.getElementById('button_add_class');
+        const alertSuccess = document.getElementById('alert-success');
+        const alertUnsuccess = document.getElementById('alert-unsuccess');
+
+
+        submitButton.innerText = 'Loading...';
+
+        fetch("{% url 'dashboard_add_class' %}", {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                alertSuccess.style.display = 'block';
+                alertSuccess.innerText = data.message; // تعديل النص إلى الرسالة الجديدة
+                submitButton.innerText = 'Add';
+
+                setTimeout(() => {
+                    alertSuccess.style.display = 'none';
+                    window.history.back();
+                }, 3000);
+            })
+            .catch(error => {
+                alertUnsuccess.style.display = 'block';
+                alertUnsuccess.innerText = data.message;
+                submitButton.innerText = 'Add';
+
+                setTimeout(() => {
+                    alertUnsuccess.style.display = 'none';
+                    window.history.back();
+                }, 3000);
+            });
+    });
+</script>
 {% endblock %}

@@ -50,7 +50,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone Number</th>
-                        <!-- <th>Status</th> -->
+                        
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -62,11 +62,11 @@
                         <td>{{ admin.email }}</td>
                         <td>{{ admin.phone_number }}</td>
                         <!-- <td>
-
-                            <span class="fa-fw select-all fas"></span>
-
-
-                            <span class="badge bg-success">Active</span>
+                            {% if admin.is_active == 1 %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inactive</span>
+                            {% endif %}
                         </td> -->
                         <td>
                             <a class="btn btn-sm rounded-pill btn-outline-info" href="" title="show"><span
