@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'djoser',
     # 'MyApp',
     # 'MyAppApi',
-    'adminApp',
     'userApp',
+    'adminApp',
     'core',
     
 

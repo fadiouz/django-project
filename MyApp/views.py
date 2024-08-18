@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Q, F, Count
-from MyApp.models import User, Address
+from .models import User, Address
 
 # Create your views here.
 
