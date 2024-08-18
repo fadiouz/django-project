@@ -34,6 +34,19 @@ def get_clients(request):
     template = loader.get_template('users/index.html')
     return HttpResponse(template.render())
 
+
+# classes
+@login_required
+def get_classes(request):
+    template = loader.get_template('users/classes/index.html')
+    return HttpResponse(template.render())
+
+@login_required
+def form_add_class(request):
+    template = loader.get_template('users/classes/add-class.html')
+    return HttpResponse(template.render())
+
+
 @login_required
 def get_enroll_requests(request):
     template = loader.get_template('users/enroll_requests.html')

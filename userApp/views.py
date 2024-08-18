@@ -172,9 +172,15 @@ class ClassesViewSet(ModelViewSet):
     
 class ImageView(APIView):
     def post(self, request):
+        exam_id = request.data.get('exam_id')
         if 'image' in request.FILES:
             image_data = request.FILES['image']
             
-            return Response({'image': str(image_data)}, status=status.HTTP_200_OK)
+            resposne = {
+                'image': str(image_data),
+                'exam_id': exam_id,
+            }
+            
+            return Response({'resposne': resposne}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
