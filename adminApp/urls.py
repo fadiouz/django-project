@@ -5,6 +5,8 @@ urlpatterns = [
     path('login', views.login, name='dashboard_login'),
     path('register', views.register, name='dashboard_register'),
     path('forgot-password', views.forgot_password, name='dashboard_forgot_password'),
+    path('message', views.MessageConfirmEmail, name='dashboard_message_confirm_email'),
+    path('pricing', views.Pricing, name='dashboard_pricing'),
 
     # ...
     path('', views.index, name='dashboard_index'),

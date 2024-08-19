@@ -9,7 +9,7 @@ from .decorators import *
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth import get_user_model
 
 def access_admin_page(role_id):
     role_names = Role.objects.filter(id=role_id).values_list('name', flat=True)
@@ -25,29 +25,59 @@ def access_admin_page(role_id):
 
 # auth views :
 def login(request):
-    template = loader.get_template('auth/login.html')
+    template = loader.get_template('registration/login.html')
     return HttpResponse(template.render())
 
 def register(request):
-    template = loader.get_template('auth/register.html')
-    return HttpResponse(template.render())
+    context = {}
+    
+    if request.method == "GET":
+        role = Role.objects.filter(name__in=['customer', 'business account']).values() 
+        context = {'role_list': role}
+        template = loader.get_template('registration/register.html')
+        
+    elif request.method == "POST":
+        User = get_user_model()
 
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        phone_number = request.POST.get('phone_number')
+        role_id = request.POST.get('role')
+        selected_role = get_object_or_404(Role, pk=role_id)
+        
+        user = User.objects.create_user(username=username, email=email, password=password, phone_number=phone_number, role=selected_role, is_active=False)
+
+        return redirect('dashboard_message_confirm_email') 
+
+    return HttpResponse(template.render(context, request))
+    
 def forgot_password(request):
-    template = loader.get_template('auth/forgot-password.html')
+    template = loader.get_template('registration/forgot-password.html')
     return HttpResponse(template.render())
 
+
+def MessageConfirmEmail(request):
+    template = loader.get_template('registration/message_confirm_email.html')
+    return HttpResponse(template.render())
+
+
+def Pricing(request):
+    template = loader.get_template('registration/pricing.html')
+    return HttpResponse(template.render())
 # Create your views here.
 
 @login_required
 def index(request): 
-    role_business_client = Role.objects.filter(name__in=['business client', 'costomer']).values_list('id', flat=True) 
-    role_costomer = Role.objects.filter(name__in=['costomer']).values_list('id', flat=True) 
+    role_business_account = Role.objects.filter(name__in=['business account']).values_list('id', flat=True) 
+    # return HttpResponse(role_business_client)
+    role_customer_business_account = Role.objects.filter(name__in=['customer', 'business account']).values_list('id', flat=True) 
 
-    count_business_client_users = User.objects.filter(role__in=role_business_client).count()
-    count_role_costomer_users = User.objects.filter(role__in=role_costomer).count()
+    count_business_account_client = User.objects.filter(role__in=role_business_account).count()
+    count_customer_business_account_client = User.objects.filter(role__in=role_customer_business_account).count()
 
-    context = {'count_business_client_users': count_business_client_users,
-               'count_role_costomer_users': count_role_costomer_users
+    context = {'count_business_account_client': count_business_account_client,
+               'count_customer_business_account_client': count_customer_business_account_client
             }
     template = loader.get_template('index.html')
     return HttpResponse(template.render(context, request))
@@ -75,7 +105,7 @@ def clients(request, client_id=None):
     if client_id is not None:
         
         if request.method == 'GET':
-            user = User.objects.filter(id=client_id).values()
+            user = User.objects.filter(id=client_id).values('username', 'email' ,'phone_number' ,'is_active', 'id', 'role__name')
             user_list = list(user)
             context = {'user_list': user_list}
             template = loader.get_template('users/show.html')
@@ -91,8 +121,8 @@ def clients(request, client_id=None):
     elif client_id is None:  
         
         if request.method == 'GET':
-            role = Role.objects.filter(name__in=['employee', 'business client', 'customer']).values_list('id', flat=True) 
-            users = User.objects.filter(role__in=role).values()
+            role = Role.objects.filter(name__in=['employee', 'business account', 'customer']).values_list('id', flat=True) 
+            users = User.objects.filter(role__in=role).values('username', 'email' ,'phone_number' ,'is_active', 'id', 'role__name')
             users_list = list(users)
             context = {'users_list': users_list}
             template = loader.get_template('users/index.html')
@@ -144,8 +174,8 @@ def EnrollRequests(request, client_id=None):
          
     elif client_id is None:  
         if request.method == 'GET':
-            role = Role.objects.filter(name__in=['employee', 'business client', 'customer']).values_list('id', flat=True) 
-            users = User.objects.filter(role__in=role, is_active = 0).values()
+            role = Role.objects.filter(name__in=['business account', 'customer']).values_list('id', flat=True) 
+            users = User.objects.filter(role__in=role, is_active = 0).values('username', 'email', 'role__name', 'is_active', 'id')
             users_list = list(users)
             context = {'users_list': users_list}
             template = loader.get_template('users/enroll_requests.html')

@@ -39,8 +39,8 @@
                         </div> -->
                     <div class="card-content">
                         <!-- table head dark -->
-                        <div class="table-responsive">
-                            <table class="table table-light mb-0">
+                        <div class="table-responsive card-body">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>NAME</th>
@@ -60,7 +60,7 @@
                                         <!-- <td>$15/hr</td>
                                             <td class="text-bold-500">UI/UX</td> -->
                                         <td>{{ user.email }}</td>
-                                        <td>{{ user.role_id }}</td>
+                                        <td>{{ user.role__name }}</td>
                                         <td>Austin,Taxes</td>
                                         <td>
                                             {% if user.is_active == 1 %}
