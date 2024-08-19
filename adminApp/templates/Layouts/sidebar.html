@@ -20,28 +20,51 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+
                 <li class="sidebar-title">Menu</li>
-    
-                <li class="sidebar-item">
-                    <a href="{% url 'dashboard_clients' %}" class='sidebar-link'>
-                        <i class="bi bi-people-fill"></i>
-                        <span>Clients</span>
+
+                <li class="sidebar-item  has-sub">
+                    <a class='sidebar-link'>
+                        <i class="bi bi-pentagon-fill"></i>
+                        <span>Users</span>
                     </a>
+                    <ul class="submenu ">
+
+                        <li class="submenu-item">
+                            <a href="{% url 'dashboard_clients' %}" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Clients</span>
+                            </a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="{% url 'dashboard_classes' %}" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Classes</span>
+                            </a>
+                        </li>
+
+                        <li class="submenu-item">
+                            <a href="{% url 'dashboard_enroll_requests' %}" class='sidebar-link'>
+                                <i class="bi bi-box-arrow-in-down-left"></i>
+                                <span>Enroll Requests</span>
+                            </a>
+                        </li>
+
+                        <li class="submenu-item">
+                            <a href="{% url 'dashboard_students' %}" class='sidebar-link'>
+                                <i class="bi bi-box-arrow-in-down-left"></i>
+                                <span>Students</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li class="sidebar-item">
-                    <a href="{% url 'dashboard_classes' %}" class='sidebar-link'>
-                        <i class="bi bi-people-fill"></i>
-                        <span>Classes</span>
-                    </a>
-                </li>
 
-                <li class="sidebar-item">
-                    <a href="{% url 'dashboard_enroll_requests' %}" class='sidebar-link'>
-                        <i class="bi bi-box-arrow-in-down-left"></i>
-                        <span>Enroll Requests</span>
-                    </a>
-                </li>
+
+
+
+
+
                 {% if user.role.name == 'admin' %}
                 <li class="sidebar-item">
                     <a href="{% url 'dashboard_admins' %}" class='sidebar-link'>

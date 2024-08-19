@@ -30,14 +30,12 @@
 {% block body_content %}
 <div class="alert alert-success alert-dismissible show fade" id="alert-success">
     This is a success alert.
-    <button type="button" class="btn-close" data-bs-dismiss="alert"
-        aria-label="Close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
 <div class="alert alert-danger alert-dismissible show fade" id="alert-unsuccess">
     This is a danger alert.
-    <button type="button" class="btn-close" data-bs-dismiss="alert"
-        aria-label="Close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
 
@@ -83,9 +81,14 @@
                     <tr>
                         <td>{{ class.name }}</td>
                         <td>
-                            <a class="btn btn-sm rounded-pill btn-outline-secondary" title="edit">
+                            <!-- <a class="btn btn-sm rounded-pill btn-outline-secondary" title="edit">
                                 <span class="fa-fw select-all fas"></span> Edit
-                            </a>
+                            </a> -->
+                            <button type="button" class="btn me-2 button_form_edit_class" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop" id="button_form_edit_class"
+                                data-class-id="{{ class.id }}" data-class-name="{{ class.name }}" onclick="formEditClass()">
+                                <span class="fa-fw select-all fas"></span> Edit
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -93,9 +96,15 @@
 
             </table>
             <!-- Button trigger modal -->
-            <button type="button" class="btn me-2 " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                <i class="fas fa-user-plus"></i> Add Class
+            <button type="button" class="btn me-2 " data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                id="button_form_add_class" onclick="formAddClass()">
+                 <div class="buttons">
+                    <a href="#" class="btn btn-primary rounded-pill">Add Class</a>
+                    
+                </div>
             </button>
+
+            
 
 
 
@@ -104,15 +113,18 @@
             <div class="modal fade modal w-100" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered ">
+                    
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title " id="staticBackdropLabel">Add Class</h5>
+                            <h5 class="modal-title " id="title_add_class">Add Class</h5>
+                            <h5 class="modal-title " id="title_edit_class">Edit Class</h5>
+
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
 
-                            <form id="add_class_form" method="POST" action="{% url 'dashboard_add_class' %}"
+                            <form id="add_class_form" method="POST" action="{% url 'dashboard_classes' %}"
                                 enctype="multipart/form-data">
                                 {% csrf_token %}
 
@@ -120,7 +132,7 @@
                                 <div class="col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label for="class_name">Class Name </label>
-                                        <input type="text" class="form-control" id="class_name" name="class_name"
+                                        <input type="text" class="form-control" id="add_class_name" name="class_name"
                                             placeholder="Enter Class Name" required />
                                     </div>
                                 </div>
@@ -130,6 +142,29 @@
                                         data-bs-dismiss="modal">Close</button>
 
                                     <button type="submit" class="btn btn-primary" id="button_add_class">Add</button>
+
+
+                                </div>
+                            </form>
+
+                            <form id="edit_class_form" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <!-- First Name -->
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="class_name">Class Name </label>
+                                        <input type="text" class="form-control" id="edit_class_name" name="class_name"
+                                            placeholder="Enter Class Name" required />
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+
+                                    <button type="submit" class="btn btn-primary" id="button_edit_class">Edit</button>
+
 
                                 </div>
                             </form>
@@ -161,44 +196,49 @@
 </script>
 
 
+<script>
+    function formAddClass() {
+        titleAddClass = document.getElementById('title_add_class');
+        titleEditClass = document.getElementById('title_edit_class');
+        addClassForm = document.getElementById('add_class_form');
+        editClassForm = document.getElementById('edit_class_form');
+
+        editClassForm.style.display = 'none';
+        addClassForm.style.display = 'block';
+        titleAddClass.style.display = 'block';
+        titleEditClass.style.display = 'none';
+    }
+
+
+    function formEditClass() {
+        titleAddClass = document.getElementById('title_add_class');
+        titleEditClass = document.getElementById('title_edit_class');
+        addClassForm = document.getElementById('add_class_form');
+        editClassForm = document.getElementById('edit_class_form');
+
+        editClassForm.style.display = 'block';
+        addClassForm.style.display = 'none';
+        titleAddClass.style.display = 'none';
+        titleEditClass.style.display = 'block';
+    }
+</script>
 
 <script>
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
+    document.querySelectorAll('#button_form_edit_class').forEach(button => {
+        button.addEventListener('click', function() {
+            const classId = this.getAttribute('data-class-id');
+            const className = this.getAttribute('data-class-name');
 
-        const formData = new FormData(form);
-        const submitButton = document.getElementById('button_add_class');
-        const alertSuccess = document.getElementById('alert-success');
-        const alertUnsuccess = document.getElementById('alert-unsuccess');
+            if (classId) {
+                document.getElementById('edit_class_name').value = className;
 
-
-        submitButton.innerText = 'Loading...';
-
-        fetch("{% url 'dashboard_add_class' %}", {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                alertSuccess.style.display = 'block';
-                alertSuccess.innerText = data.message; // تعديل النص إلى الرسالة الجديدة
-                submitButton.innerText = 'Add';
-
-                setTimeout(() => {
-                    alertSuccess.style.display = 'none';
-                    window.history.back();
-                }, 3000);
-            })
-            .catch(error => {
-                alertUnsuccess.style.display = 'block';
-                alertUnsuccess.innerText = data.message;
-                submitButton.innerText = 'Add';
-
-                setTimeout(() => {
-                    alertUnsuccess.style.display = 'none';
-                    window.history.back();
-                }, 3000);
-            });
+                
+                const url = "/dashboard/class/" + classId ;
+                document.getElementById('edit_class_form').setAttribute('action', url);
+            } else {
+                console.error('classId is empty');
+            }
+        });
     });
 </script>
 {% endblock %}

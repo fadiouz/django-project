@@ -47,53 +47,58 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body">
-                        <form class="form">
+                        <form class="form" id="edit_user_form" method="POST" action="{% url 'dashboard_show_edit_client' client_id=user_list.0.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- <input type="hidden" name="_method" value="PUT"> -->
                             <div class="row">
 
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="user_name">User Name</label>
-                                        <input type="text" id="user_name" class="form-control" placeholder="User Name" name="user_name" value="{{ user_list.0.username }}" disabled>                                    </div>
+                                        <input type="text" id="user_name" class="form-control" placeholder="User Name"
+                                            name="user_name" value="{{ user_list.0.username }}" disabled>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="email" id="email" class="form-control"
-                                            name="email" placeholder="Email" value="{{ user_list.0.email }}" disabled>
+                                        <input type="email" id="email" class="form-control" name="email"
+                                            placeholder="Email" value="{{ user_list.0.email }}" disabled>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="user_number_phone">Phone Number</label>
-                                        <input type="text" id="user_number_phone" class="form-control" placeholder="Phone Number"
-                                            name="user_number_phone" value="{{ user_list.0.phone_number }}" disabled>
+                                        <input type="text" id="user_number_phone" class="form-control"
+                                            placeholder="Phone Number" name="user_number_phone"
+                                            value="{{ user_list.0.phone_number }}" disabled>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="user_role">Role</label>
-                                        <input type="text" id="user_role" class="form-control"
-                                            name="user_role" placeholder="Role" value="{{ user_list.0.role_id }}" disabled>
+                                        <input type="text" id="user_role" class="form-control" name="user_role"
+                                            placeholder="Role" value="{{ user_list.0.role_id }}" disabled>
                                     </div>
                                 </div>
-                                
-                                
+
+
                                 <div class="col-md-6 col-lg-6">
                                     <fieldset class="form-group">
                                         <label for="city-column">Is Activ</label>
                                         <select class="form-select" id="basicSelect" name="is_active">
                                             <option value="1" {% if user_list.0.is_active == 1 %} selected {% endif %}>Active</option>
-                                            <option value="0" {% if user_list.0.is_active == 0 %} selected {% endif %}>Inactive</option>
+<option value="0" {% if user_list.0.is_active == 0 %} selected {% endif %}>Inactive</option>
                                         </select>
                                     </fieldset>
                                 </div>
 
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                    <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                    <!-- <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button> -->
                                 </div>
                             </div>
                         </form>

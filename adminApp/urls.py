@@ -12,16 +12,27 @@ urlpatterns = [
     path('admins', views.get_admins, name='dashboard_admins'),
     
     
-    #clients
-    path('clients', views.get_clients, name='dashboard_clients'),
-    path('client/<int:id>', views.show_client, name='dashboard_show_client'),
+    #Clients
+    path('clients', views.clients, name='dashboard_clients'),
+    path('client/<int:client_id>', views.clients, name='dashboard_show_edit_client'),
 
 
-    # classes
-    path('client/classes', views.get_classes, name='dashboard_classes'),
-    path('client/add-class', views.add_class, name='dashboard_add_class'),
+    #Classes
+    path('classes', views.classes, name='dashboard_classes'),
+    path('class/<int:class_id>', views.classes, name='dashboard_edit_class'),
 
-    path('enroll-requests', views.get_enroll_requests, name='dashboard_enroll_requests'),
+
+    #Enroll Requests
+    path('enroll-requests', views.EnrollRequests, name='dashboard_enroll_requests'),
+    path('enroll-requests/<int:client_id>', views.EnrollRequests, name='dashboard_confirm_enroll_requests'),
+
+
+    #Students
+    path('students', views.students, name='dashboard_students'),
+    path('students/<int:student_id>', views.students, name='dashboard_edit_show_students'),
+    path('add_students', views.get_student_form_add, name='dashboard_add_students'),
+
+
     path('pages/payments', views.get_payments, name='dashboard_payments'),
     path('pages/settings', views.settings_page, name='dashboard_settings'),
     path('pages/feedback', views.feedback_page, name='dashboard_feedback'),
