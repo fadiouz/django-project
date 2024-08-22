@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="{% static 'assets/vendors/bootstrap-icons/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/app.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/pages/auth.css' %}">
+
+    {% block CSS %}
+    {% endblock %}
+
 </head>
 
 <body>
@@ -19,6 +23,10 @@
        {% block content %}
        {% endblock %}
     </div>
+
+    <script src="{% static 'assets/js/auth.js' %}"></script>
+    {% block js %}
+    {% endblock %}
 </body>
 
 </html>

@@ -10,6 +10,9 @@ from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.views import APIView
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from .revision import Revision
+from django.http import HttpResponse
+from django.http import JsonResponse
 
 
 class ExamsViewSet(ModelViewSet):
@@ -174,13 +177,10 @@ class ImageView(APIView):
     def post(self, request):
         exam_id = request.data.get('exam_id')
         if 'image' in request.FILES:
-            image_data = request.FILES['image']
+            image = request.FILES['image']
             
-            resposne = {
-                'image': str(image_data),
-                'exam_id': exam_id,
-            }
+            result = Revision.RevisionImage(image)
             
-            return Response({'resposne': resposne}, status=status.HTTP_200_OK)
+            return JsonResponse(result, safe=False)  
         else:
-            return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'No image file found'}, status=status.HTTP_400_BAD_REQUEST)

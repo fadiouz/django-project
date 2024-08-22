@@ -51,6 +51,14 @@
                         </li>
 
                         <li class="submenu-item">
+                            <a href="{% url 'dashboard_employees' %}" class='sidebar-link'>
+                                <i class="bi bi-box-arrow-in-down-left"></i>
+                                <span>Employee</span>
+                            </a>
+                        </li>
+                        
+
+                        <li class="submenu-item">
                             <a href="{% url 'dashboard_students' %}" class='sidebar-link'>
                                 <i class="bi bi-box-arrow-in-down-left"></i>
                                 <span>Students</span>
@@ -73,6 +81,13 @@
                     </a>
                 </li>
                 {% endif %}
+                <li class="sidebar-item">
+                    <a href="{% url 'dashboard_pricing' %}" class='sidebar-link'>
+                        <i class="bi bi-wallet2"></i>
+                        <span>Pricing</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item">
                     <a href="{% url 'dashboard_payments' %}" class='sidebar-link'>
                         <i class="bi bi-wallet2"></i>

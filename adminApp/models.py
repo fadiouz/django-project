@@ -1,13 +1,13 @@
 from django.db import models
 from django.conf import settings
-
+from core.models import *
 
 class SubscriptionInfos(models.Model):
     type = models.CharField(max_length=255)
     max_employee_numbers = models.IntegerField()
     max_request_rate = models.IntegerField()
     price = models.IntegerField()
-
+    role = models.ForeignKey(Role, on_delete=models.PROTECT)
 
 
 class Subscriptions(models.Model):
