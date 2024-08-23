@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import compass
+from ...libs import compass
 
 # compass.check_direction()
 

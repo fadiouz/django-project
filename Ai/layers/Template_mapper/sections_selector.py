@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
-import libs.compass as compass
-import libs.contour as Cnt
+from ...libs import compass as compass
+from ...libs import contour as Cnt
 
 class Selector:
     def __init__(self  , duplicate_ratio=20):
