@@ -1,0 +1,130 @@
+{% extends "Layouts/layout.html" %}
+{% load static %}
+
+{% block CSS %}
+
+<link rel="stylesheet" href="{% static 'assets/vendors/simple-datatables/style.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendors/fontawesome/all.min.css' %}">
+
+<style>
+    .fontawesome-icons {
+        text-align: center;
+    }
+
+    .fontawesome-icons .the-icon svg {
+        font-size: 24px;
+    }
+</style>
+
+{% endblock %}
+
+{% block body_content %}
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Employee</h3>
+                <p class="text-subtitle text-muted">For user to check they list</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Employee</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="section">
+    <div class="card">
+        <div class="card-header">
+            Simple Datatable
+        </div>
+        <div class="card-body">
+            <form class="form" id="edit_student_form" method="POST" action="{% url 'dashboard_employees' %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="form-group">
+                            <label for="employee_name">Employee Name</label>
+                            <input type="text" id="employee_name" class="form-control" placeholder="Employee Name"
+                                name="employee_name" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" name="email"
+                                placeholder="Email" required>
+                        </div>
+                    </div>
+
+                    
+
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="form-group">
+                            <label for="employee_password">Password</label>
+                            <input type="password" id="employee_password" class="form-control"
+                                placeholder="Password" name="employee_password"
+                                required>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="form-group">
+                            <label for="employee_number_phone">Phone Number</label>
+                            <input type="text" id="employee_number_phone" class="form-control"
+                                placeholder="Phone Number" name="employee_number_phone"
+                                required>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="user_role">Role</label>
+                            <input type="text" id="user_role" class="form-control" name="user_role"
+                                placeholder="Role" value="{{ employee_list.0.role__name }}" disabled>
+                        </div>
+                    </div> -->
+
+
+                    <div class="col-md-6 col-lg-6">
+                        <fieldset class="form-group">
+                            <label for="city-column">Is Activ</label>
+                            <select class="form-select" id="basicSelect" name="is_active">
+                                <option value="1" selected>Active</option>
+<option value="0" >Inactive</option>
+                            </select>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                        <!-- <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button> -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'assets/vendors/simple-datatables/simple-datatables.js' %}"></script>
+<script>
+    // Simple Datatable
+    let table1 = document.querySelector('#table1');
+    let dataTable = new simpleDatatables.DataTable(table1);
+</script>
+<script src="{% static 'assets/vendors/fontawesome/all.min.js' %}"></script>
+
+{% endblock %}
