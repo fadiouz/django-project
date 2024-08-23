@@ -10,7 +10,7 @@ from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.views import APIView
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-# from .revision import Revision
+from .revision import Revision
 from django.http import HttpResponse
 from django.http import JsonResponse
 
@@ -179,8 +179,8 @@ class ImageView(APIView):
         if 'image' in request.FILES:
             image = request.FILES['image']
             
-            # result = Revision.RevisionImage(image)
-            result = "sad"
+            result = Revision.RevisionImage(image)
+            # result = "sad"
             return JsonResponse(result, safe=False)  
         else:
             return Response({'error': 'No image file found'}, status=status.HTTP_400_BAD_REQUEST)
