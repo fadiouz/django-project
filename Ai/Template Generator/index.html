@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Templates for PDF</title>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="style.css" />
+
+	<style></style>
+</head>
+
+<body>
+
+	<div class="container">
+		<!--  -->
+		<div id="content" class="hide">
+			<!-- you can but class (square_black_top_left) or (treangle_black_top_left) -->
+			<div class="square_black_top_left">
+			</div>
+
+
+			<!-- you can but class (square_black_top_right) -->
+			<!-- <div class="treangle_black_top_right">
+			</div> -->
+
+			<!-- you can but class (square_black_bottom_left) or (treangle_black_bottom_left)-->
+			<div class="square_black_bottom_left">
+			</div>
+
+			<!-- you can but class (square_black_bottom_right) or (treangle_black_bottom_right)-->
+			<div class="square_black_bottom_right">
+			</div>
+
+			<div class="container_without_edge">
+				<div class="container px-5">
+					<div class="row ">
+						<div class="col-lg-4 contact-details">
+							<h5>Collage: </h5>
+							<h5>Name: </h5>
+							<h5>num: </h5>
+
+
+						</div>
+						<div class="col-lg-3">
+							<li class="text_center">
+								<div class="num_id_child">
+									<div class="circle"><span class="letter">A</span></div>
+									<div class="circle"><span class="letter">B</span></div>
+									<div class="circle"><span class="letter">C</span></div>
+									<div class="circle"><span class="letter">D</span></div>
+								</div>
+							</ls>
+						</div>
+
+						<div class="col-lg-5" id="num_id_child">
+
+							<!-- this code from js -->
+
+						</div>
+
+					</div>
+
+					<div class="line_bottom"></div>
+
+
+				</div>
+				<div id="quastion">
+
+					<!-- this code from js -->
+
+				</div>
+
+			</div>
+
+			<div class="footer">
+				<p>Best wishes</p>
+			</div>
+		</div>
+
+		<br />
+
+		<div id="img_select">
+			<p>Select your templet</p>
+			<div class="row">
+
+				<div class="col-md-3">
+					<a onclick="createQuestions(25)"><img src="images\25.png" alt="" class="img">
+						<p class="text_center">25 Question</p>
+					</a>
+				</div>
+				<div class="col-md-3">
+					<a onclick="createQuestions(50)"><img src="images\50.png" alt="" class="img">
+						<p class="text_center">50 Question</p>
+					</a>
+				</div>
+				<div class="col-md-3">
+					<a onclick="createQuestions(75)"><img src="images\75.png" alt="" class="img">
+						<p class="text_center">75 Question</p>
+					</a>
+				</div>
+				<div class="col-md-3">
+					<a onclick="createQuestions(100)"><img src="images\100.png" alt="" class="img">
+						<p class="text_center">100 Question</p>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- <input type="text" id="numInput" placeholder="Num Questions" pattern="\d+"
+			oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+		<button type="submit" onclick="createQuestions()">Submit</button> -->
+		<div class="btn hide" id="buttons">
+
+			<button class="btn btn-success btn-lg" onclick="Before_selection()">Choose Another Template</button>
+
+			<button id="btn-one" class="btn btn-success btn-lg">Download PDF</button>
+
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+		integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<script src="custom.js"></script>
+</body>
+
+</html>

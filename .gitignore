@@ -5,3 +5,12 @@ myvenv
 db.sqlite3  
 /static  
 .DS_Store 
+
+
+models
+layers/*Data Set
+*Data Set
+Data
+*.tflite
+*.keras
+*.pyc

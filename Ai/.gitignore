@@ -1,5 +1,8 @@
-models/*.h5
-*.h5
+models
+layers/*Data Set
+*Data Set
+Data
+
 *.tflite
 *.keras
 *.pyc
