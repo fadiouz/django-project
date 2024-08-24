@@ -18,7 +18,7 @@ from sklearn.utils import shuffle
 # ##End import libraries
 
 
-datasets = pd.read_csv('layers/Answer_predictor/Data Set/csv data/train.csv')
+datasets = pd.read_csv('Ai/layers/Answer_predictor/Data Set/csv data/train.csv')
 datasets = pd.concat([datasets ,datasets ,datasets,datasets,datasets])
 
 # Encode classes
@@ -39,7 +39,7 @@ img_rows, img_cols = 50, 150
 def load_and_preprocess_images(image_names, target_size=(img_rows, img_cols)):
     images = []
     for img_name in image_names:
-        img_path = 'layers/Answer_predictor/Data Set/train data/' + str(img_name)  
+        img_path = 'Ai/layers/Answer_predictor/Data Set/train data/' + str(img_name)  
         img = image.load_img(img_path, target_size=target_size)
         img_array = image.img_to_array(img)
         gray_image = cv2.cvtColor(img_array, cv2.COLOR_BGR2GRAY)
@@ -120,7 +120,9 @@ model.add(Dropout(0.25))
 
 
 model.add(Flatten())
-model.add(Dense(256, activation = "relu"))
+model.add(Dense(64, activation = "relu"))
+model.add(Dropout(0.5))
+model.add(Dense(16, activation = "relu"))
 model.add(Dropout(0.5))
 model.add(Dense(6, activation = "softmax"))
 

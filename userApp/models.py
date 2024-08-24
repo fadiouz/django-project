@@ -42,8 +42,13 @@ class ExamForms(models.Model):
 class Questions(models.Model):
     examForm = models.ForeignKey(ExamForms, on_delete=models.CASCADE)
     question_id = models.IntegerField(null=True)
-    answer = models.CharField(max_length=10)
+    answer = models.CharField(max_length=1)
     
+    def save(self, *args, **kwargs):
+        self.answer = self.answer.upper()
+        super(Questions, self).save(*args, **kwargs)
+        
+        
 class Marks(models.Model):
     studentClass = models.ForeignKey(StudentClasses, on_delete=models.PROTECT)
     xamForm = models.ForeignKey(ExamForms, on_delete=models.PROTECT)

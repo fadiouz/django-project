@@ -203,6 +203,7 @@ class ImageView(APIView):
                 
                 
             
-            return Response({'mark': mark}, status=status.HTTP_200_OK)
+            return Response({'mark': mark,
+                             'result':result}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'No image file found'}, status=status.HTTP_400_BAD_REQUEST)

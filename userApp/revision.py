@@ -68,6 +68,7 @@ class Revision():
                 for j,question in enumerate(section):
                     answers[i][j] = answerExtractor.predict(question)
                     # print(f'i {i} j {j}')
+                    # print(answers[i][j])
                     result_str = f'{question_count}:{answers[i][j]}'
                     results.append(result_str)
                     question_count += 1
@@ -109,18 +110,21 @@ class Revision():
             
             num_questions_value = num_questions[0]
             
-            if num_questions_value <= 25:
-                sections_num = 1
-                print('sections_num = 1')
-            elif num_questions_value <= 50:
-                sections_num = 2
-                print('sections_num = 2')
-            elif num_questions_value <= 75:
-                sections_num = 3
-                print('sections_num = 3')
-            else:
-                sections_num = 4
-                print('sections_num = 4')
+            # if num_questions_value <= 25:
+            #     sections_num = 1
+            #     print('sections_num = 1')
+            # elif num_questions_value <= 50:
+            #     sections_num = 2
+            #     print('sections_num = 2')
+            # elif num_questions_value <= 75:
+            #     sections_num = 3
+            #     print('sections_num = 3')
+            # else:
+            sections_num = 4
+                # print('sections_num = 4')
+                
+                
+            print(sections_num)
             check_extraction,sections = Revision.SelectSections(image, contours, sections_num, 0.2)
             
 
