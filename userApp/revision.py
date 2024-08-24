@@ -15,7 +15,7 @@ from Ai.layers.Answer_predictor import answer_extractor
 
 class Revision():
     def IsImage(image):
-        model_path = '../../project/models/check_paper.h5'
+        model_path = 'Ai/models/check_paper.h5'
         paperdetector = paper_detector.paper_checker(model_path)
         # print(paperdetector)
         isPaper = paperdetector.predict(image)
@@ -48,7 +48,7 @@ class Revision():
         results = []
         question_count = 0
         answers = np.array([[None]*25]*4)
-        answerExtractor = answer_extractor.Answer_Extractor('../../project/models/check_answer_perdictor.h5')
+        answerExtractor = answer_extractor.Answer_Extractor('Ai/models/check_answer_perdictor.h5')
         for i,section in enumerate(questions):
             if(not type(section) == type(None)):
                 for j,question in enumerate(section):
