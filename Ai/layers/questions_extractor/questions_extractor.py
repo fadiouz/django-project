@@ -40,12 +40,14 @@ class Extractor():
                     lines.append(int((start+end)/2))
                 start=i
 
+        # self.debug(section_Image , lines)
+        
         if(len(lines)<expected_questions_num):
             raise  Exception("Sorry, could not scan the paper properly")
         
-        for i in lines:
-            cv2.line(section_Image , (0,i) ,  (section_Image.shape[1] , i) ,(0,0,255) ,1)
-                
+        
+        # self.debug(section_Image , lines)
+
         # this code selects the questions rectangles based on the lines specified 
         # it assign the selected area of the qustion to its index element in the qustions np array
         questions = np.array([None]*expected_questions_num)
@@ -60,3 +62,14 @@ class Extractor():
 
         return questions
 
+    def debug(self , image ,lines):
+        section_Image = image.copy()
+        for i in lines:
+            cv2.line(section_Image , (0,i) ,  (section_Image.shape[1] , i) ,(0,0,255) ,1)
+        
+        print(len(lines))
+        cv2.imshow("s" , section_Image)
+        
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        

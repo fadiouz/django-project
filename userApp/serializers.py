@@ -45,7 +45,7 @@ class ExamsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Exams
-        fields = ['id', 'title', 'complete_mark', 'pass_mark', 'question_number', 'classes_id', 'classes']
+        fields = ['id', 'title', 'complete_mark', 'pass_mark', 'question_number', 'classes_id', 'classes', 'date']
     
     # def get_forms(self, obj):
     #     exam_forms = ExamForms.objects.filter(exam=obj)

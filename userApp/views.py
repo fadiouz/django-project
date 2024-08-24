@@ -177,10 +177,32 @@ class ImageView(APIView):
     def post(self, request):
         exam_id = request.data.get('exam_id')
         if 'image' in request.FILES:
+            mark = 0
+            num_questions = Exams.objects.filter(pk=exam_id).values('question_number', 'complete_mark')
+            question_numbers = [item['question_number'] for item in num_questions]
+            complete_mark = [item['complete_mark'] for item in num_questions]
+            mark_of_single_question = complete_mark[0] / question_numbers[0]
+            # exam_form_id = ExamForms.objects.filter(exam=exam_id).values('id')
+            
+            
+            exam_form_id = 2
+            questions = Questions.objects.filter(examForm=exam_form_id).values('question_id', 'answer')
+            
+            
             image = request.FILES['image']
             
-            result = Revision.RevisionImage(image)
+            result = Revision.RevisionImage(image, question_numbers)
             # result = "sad"
-            return JsonResponse(result, safe=False)  
+            for question, item in zip(questions, result):
+                parts = item.split(':')
+                if len(parts) == 2:
+                    question_id = int(parts[0])
+                    answer = parts[1]
+                    if question['question_id'] == question_id and question['answer'] == answer:
+                        mark += mark_of_single_question
+                
+                
+            
+            return Response({'mark': mark}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'No image file found'}, status=status.HTTP_400_BAD_REQUEST)

@@ -156,13 +156,13 @@ body {
 
 li {
     margin-bottom: 3rem;
-    border: 5px solid black;
+    border: 7px solid black;
     list-style: none;
     padding-left: 15px;
 }
 
 .p_num_id_child{
-    border: 5px solid black;
+    border: 7px solid black;
 }
 
 h5::after {

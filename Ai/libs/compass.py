@@ -59,8 +59,8 @@ def min_Y_point(points):
             min = point
     return min
 
-# this methode aprrox a contour closed to a rectangle shape into exact rectangle
-# this dunctions returns two points represents the rectangle of a rectangled contours
+# this method approximate a contour which it's shape is close to a rectangle shape into exact rectangle
+# this function returns two points represents the rectangle of a rectangled contours
 def fix_rectangled_countours(contrs ):
     formated_contrs = [ [i[0] for i in cnt ] for cnt in contrs]
     rectangles = []
@@ -115,7 +115,24 @@ def alignment_with_paper(contours , tolerance = 4):
             j+=1
         i+=1
     return False,[(0,0),(0,0)]
-            
+
+
+def alignment_with_paper2(L_top_R_bottom_shapes , tolerance = 4):
+    for shape1 in L_top_R_bottom_shapes:
+        for shape2 in L_top_R_bottom_shapes:
+            if(shape1==shape2):
+                continue
+            if(is_point_on_line(0,shape1["R_bottom_point"][1] ,shape2["R_bottom_point"][0] ,shape2["R_bottom_point"][1] , tolerance)):
+                return True ,[shape1["R_bottom_point"] , shape2["R_bottom_point"]]
+
+    return False,[(0,0),(0,0)]
+
+def cut_paper_border(L_top_R_bottom_shapes):
+    r_bottoms = [x["R_bottom_point"] for x in L_top_R_bottom_shapes ]
+    l_tops = [x["L_top_point"] for x in L_top_R_bottom_shapes ]
+
+    return min_point(l_tops), max_point(r_bottoms)
+    
 
 # line's formula :
 #  y = ax + c

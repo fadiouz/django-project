@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-
+from datetime import date
 
 class Classes(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
@@ -29,6 +29,7 @@ class Exams(models.Model):
     complete_mark = models.IntegerField()
     pass_mark = models.IntegerField()
     question_number = models.IntegerField()
+    date = models.DateField(default=date.today)
     
     def __str__(self):
         return self.title

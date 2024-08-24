@@ -1,15 +1,16 @@
 import cv2
 import numpy as np
-from ...libs import compass as compass
 from ...libs import contour as Cnt
+from ...libs import compass as compass
+
 
 class Selector:
     def __init__(self  , duplicate_ratio=20):
         self.duplicate_ratio=duplicate_ratio
         pass
 
-    def select_sections(self ,paper_image , contours , sections_number=4):
-        # # Filter contours by area and shape
+    def select_sections(self ,paper_image , contours , sections_number=4 , ratio = 0.2):
+        #  Filter contours by area and shape
         filtered_contours = [cnt for cnt in contours if cv2.contourArea(cnt) > 1000]
 
         # Approximate contours
@@ -17,14 +18,29 @@ class Selector:
         
         rectangled_contours = Cnt.filter_cnts_basedOn_num(approxed_contours , 4)
 
-        # for rect in rectangled_contours:
-        #     cv2.drawContours(paper_image ,[rect],0 ,(222,0,0) ,2)
+       
+        # for rect in filtered_contours:
+        #     cv2.drawContours(paper_image ,[rect],0 ,(0,255,100) ,2)
 
-        rectangled_contours = [cnt for cnt in rectangled_contours if ( compass.check_rectangle_with_ratio(countour=cnt , ratio=0.2 , tolerance=0.05))]
+        # cv2.imshow("s" , paper_image)
+        # cv2.imwrite('sayad.jpg', paper_image)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
+        rectangled_contours = [cnt for cnt in rectangled_contours if ( compass.check_rectangle_with_ratio(countour=cnt , ratio=ratio , tolerance=0.2))]
+
 
         rectangled_contours , clusters , _ = compass.remove_cnt_duplicates(rectangled_contours ,self.duplicate_ratio)
-     
+
+        if(sections_number > len(rectangled_contours)):
+            print(f"error : sections number are {len(rectangled_contours)} , expected {sections_number}")
+            return None , False
+        
+       
         rectangles = compass.fix_rectangled_countours(rectangled_contours)
+
+        # self.debug(paper_image , rectangles , clusters)
+  
 
         sectionsIndeces = np.array([50000]*sections_number)
         for i,rectangle in enumerate(rectangles):
@@ -39,7 +55,7 @@ class Selector:
                 if(rectangle["L_top_point"][0]==section):
                     sections.append(rectangle)
 
-        section_selects = np.array([None]*4)
+        section_selects = np.array([None]*sections_number)
 
         for i,sect in enumerate(sections):
             if(i>=sections_number):
@@ -49,16 +65,21 @@ class Selector:
             end_x = sect["R_bottom_point"][0]
             end_y = sect["R_bottom_point"][1]
             section_selects[i]=paper_image[start_y:end_y,start_x:end_x]
-        
 
-        return section_selects;
+     
+
+        return section_selects , True;
 
     def debug(self , image , rectangles , clusters):
+        image = image.copy()
         for rectangle in rectangles:
             cv2.rectangle(image, rectangle["L_top_point"] , rectangle["R_bottom_point"] ,(0,255,0) , 2 )
 
         for cluster in clusters:
-            cv2.circle(image , cluster,20 ,(33,55,88) ,2 )
+            cv2.circle(image , cluster,self.duplicate_ratio ,(33,55,88) ,2 )
 
-        cv2.imshow("s" , image[400:])
- 
+        cv2.imshow("s" , image)
+        
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        
